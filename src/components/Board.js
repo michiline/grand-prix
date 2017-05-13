@@ -9,7 +9,7 @@ class Board extends Component {
     // })
     return (
       <div>
-        <table>
+        <table className={this.props.boardEnabled ? 'enabled' : 'disabled'}>
           <tbody>
             {
               this.props.items.map((row, x) => {

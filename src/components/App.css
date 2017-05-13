@@ -4,3 +4,17 @@ td {
 td:hover {
   transform: scale(1.1);
 }
+.enabled {
+  pointer-events: all
+}
+.disabled {
+  pointer-events: none
+}
+@keyframes fadeOut {
+  0% { opacity: 1 }
+  100% { opacity: 0 }
+}
+@keyframes fadeIn {
+  0% { opacity: 0 }
+  100% { opacity: 1 }
+}
