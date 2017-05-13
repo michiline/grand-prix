@@ -1,0 +1,6 @@
+td {
+  transition: transform 0.3s;
+}
+td:hover {
+  transform: scale(1.1);
+}
