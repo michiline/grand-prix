@@ -1,3 +1,10 @@
+button {
+  padding: 0 !important;
+  border: none;
+}
+button:focus {
+  outline:0;
+}
 td {
   padding: 5px;
   height: 46px;

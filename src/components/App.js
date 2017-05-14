@@ -8,6 +8,7 @@ const SWAP_TIME = 0.25
 const FADEOUT_TIME = 0.75
 const FADEIN_TIME = 0.75
 const SWAP_DISTANCE = '56px'
+const MOVES_LEFT = 15
 
 class App extends Component {
   constructor (props) {
@@ -16,10 +17,6 @@ class App extends Component {
       return Array.from({length: COLS}, () => getRandomInt(0, 5))
     })
     this.state = {
-      score: 0,
-      movesLeft: 300,
-      items: items,
-      elapsedtime: 0,
       x1: -1,
       y1: -1,
       x2: -1,
@@ -48,6 +45,12 @@ class App extends Component {
         x: 4,
         y: 3
       }],
+      items: items,
+      // info
+      score: 0,
+      movesLeft: MOVES_LEFT,
+      elapsedTime: 0,
+      // states
       mouseDown: false,
       dragEnter: false,
       crash: false,
@@ -96,8 +99,12 @@ class App extends Component {
     this.crash = crash.bind(this)
     this.fadeOut = fadeOut.bind(this)
     this.fadeIn = fadeIn.bind(this)
+    this.mouseUp = mouseUp.bind(this)
     this.resetState = resetState.bind(this)
+    this.restart = restart.bind(this)
     this.getStyle = getStyle.bind(this)
+    this.addSecond = addSecond.bind(this)
+    setTimeout(this.addSecond, 1000)
   }
 
   render () {
@@ -110,7 +117,7 @@ class App extends Component {
           items={this.state.items}
           boardEnabled={this.state.boardEnabled}
           mouseDown={this.mouseDown}
-          mouseUp={this.resetState}
+          mouseUp={this.mouseUp}
           dragEnter={this.dragEnter}
           getStyle={this.getStyle}
           />
@@ -118,17 +125,24 @@ class App extends Component {
           <div className='score'>Score</div>
           <div className='line first-line' />
           <div className='score-value'>{this.state.score}</div>
-          <div className='moves-left'>Moves left <div className='moves-left-text-style'>{this.state.movesLeft}</div></div>
+          <div className='moves-left'>Moves Left <div className='moves-left-text-style'>{this.state.movesLeft}</div></div>
           <div className='line second-line' />
-          <div className='time-elapsed'>Time elapsed <div className='time-elapsed-text-style'>{parseTime(this.state.elapsedtime)}</div></div>
+          <div className='time-elapsed'>Time Elapsed <div className='time-elapsed-text-style'>{parseTime(this.state.elapsedTime)}</div></div>
         </div>
-        <div className='restart-area'>
+        <button className='restart-area' onClick={this.restart}>
           <img className='restart-img' alt='restart-img' src={require('../../images/restart.png')} />
           <div className='restart'>Restart</div>
-        </div>
+        </button>
       </div>
     )
   }
+}
+
+function addSecond () {
+  this.setState({
+    elapsedTime: this.state.elapsedTime + 1
+  })
+  setTimeout(this.addSecond, 1000)
 }
 
 function parseTime (time) {
@@ -179,6 +193,7 @@ function dragEnter (e, x, y) {
   if (this.state.mouseDown === true && ((this.state.x1 !== x && this.state.y1 === y) || (this.state.x1 === x && this.state.y1 !== y))) {
     console.log('swap with: (' + x + ',' + y + ')')
     this.setState({
+      movesLeft: this.state.movesLeft - 1,
       mouseDown: false,
       boardEnabled: false,
       dragEnter: true,
@@ -190,9 +205,8 @@ function dragEnter (e, x, y) {
     if (crash) {
       setTimeout(this.crash, SWAP_TIME * 1000)
     } else {
-      setTimeout(this.resetState, 300)
+      setTimeout(this.resetState, SWAP_TIME * 2000)
     }
-    // ako se ne crasha
   }
 }
 function crash () {
@@ -234,13 +248,53 @@ function resetState () {
       x: -1,
       y: -1
     },
-    score: 0,
+    elapsedTime: 0,
     mouseDown: false,
     dragEnter: false,
-    boardEnabled: true,
     crash: false,
     fadeOut: false,
-    fadeIn: false
+    fadeIn: false,
+    boardEnabled: true
+  })
+}
+function mouseUp () {
+  this.setState({
+    firstItem: {
+      x: -1,
+      y: -1
+    },
+    secondItem: {
+      x: -1,
+      y: -1
+    },
+    mouseDown: false,
+    dragEnter: false,
+    crash: false,
+    fadeOut: false,
+    fadeIn: false,
+    boardEnabled: true
+  })
+}
+function restart () {
+  this.setState({
+    firstItem: {
+      x: -1,
+      y: -1
+    },
+    secondItem: {
+      x: -1,
+      y: -1
+    },
+    // should add new game API call
+    score: 0,
+    movesLeft: MOVES_LEFT,
+    elapsedTime: 0,
+    mouseDown: false,
+    dragEnter: false,
+    crash: false,
+    fadeOut: false,
+    fadeIn: false,
+    boardEnabled: true
   })
 }
 
