@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="46" height="38" viewBox="0 0 46 38">
+    <defs>
+        <path id="a" d="M.368.209h40.228v29.719H.368V.208z"/>
+        <path id="c" d="M.368.209h40.228v6.265H.368V.21z"/>
+        <path id="e" d="M0 .196v29.719h45.805V.195H0z"/>
+        <path id="g" d="M45.806.196v2.94H0V.196h45.806z"/>
+    </defs>
+    <g fill="none" fill-rule="evenodd">
+        <path d="M-5-9h56v56H-5z"/>
+        <g transform="translate(2.421 .6)">
+            <mask id="b" fill="#fff">
+                <use xlink:href="#a"/>
+            </mask>
+            <path fill="#F8971D" d="M38.247 3.003H18.25L13.63.208H2.718a2.351 2.351 0 0 0-2.35 2.355v25.01c0 1.301 1.051 2.355 2.35 2.355h35.529a2.352 2.352 0 0 0 2.349-2.355V5.356c0-1.3-1.053-2.353-2.35-2.353" mask="url(#b)"/>
+        </g>
+        <path fill="#DCE2E9" d="M43.017 21.256V8.751c0-1.299-1.052-2.356-2.35-2.356H5.139a2.354 2.354 0 0 0-2.35 2.356v12.505h40.229z"/>
+        <g transform="translate(2.421 .6)">
+            <mask id="d" fill="#fff">
+                <use xlink:href="#c"/>
+            </mask>
+            <path fill="#FFC52F" d="M38.247 3.003H18.25L13.63.208H2.718a2.351 2.351 0 0 0-2.35 2.355V3.68c0-1.301 1.051-2.354 2.35-2.354H13.63l4.62 2.793h19.997a2.353 2.353 0 0 1 2.349 2.354V5.356c0-1.3-1.053-2.353-2.35-2.353" mask="url(#d)"/>
+        </g>
+        <g transform="translate(0 7.877)">
+            <mask id="f" fill="#fff">
+                <use xlink:href="#e"/>
+            </mask>
+            <path fill="#FFC52F" d="M43.457.196H2.35A2.352 2.352 0 0 0 0 2.55l2.789 25.01c0 1.301 1.051 2.355 2.35 2.355H40.668a2.352 2.352 0 0 0 2.349-2.354l2.788-25.01c0-1.3-1.051-2.355-2.348-2.355" mask="url(#f)"/>
+        </g>
+        <g transform="translate(0 7.877)">
+            <mask id="h" fill="#fff">
+                <use xlink:href="#g"/>
+            </mask>
+            <path fill="#FFC52F" d="M2.35 1.314h41.107c1.113 0 2.041.78 2.284 1.822l.065-.586c0-1.3-1.052-2.354-2.349-2.354H2.35A2.352 2.352 0 0 0 0 2.55l.065.586A2.35 2.35 0 0 1 2.35 1.314" mask="url(#h)"/>
+        </g>
+    </g>
+</svg>
