@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import './App.css'
 import Board from './Board'
 import EndGame from './EndGame'
+import Submitted from './Submitted'
 
 const COLS = 9
 const ROWS = 9
@@ -9,7 +10,7 @@ const SWAP_TIME = 0.25
 const FADEOUT_TIME = 0.75
 const FADEIN_TIME = 0.75
 const SWAP_DISTANCE = '56px'
-const MOVES_LEFT = 5
+const MOVES_LEFT = 2
 
 class App extends Component {
   constructor (props) {
@@ -58,7 +59,14 @@ class App extends Component {
       fadeOut: false,
       fadeIn: false,
       endGame: false,
-      boardEnabled: true
+      boardEnabled: true,
+      stopTimer: false,
+      // end game
+      name: '',
+      email: '',
+      validName: true,
+      validEmail: true,
+      submit: false
     }
     this.styles = {
       normal: {
@@ -108,6 +116,10 @@ class App extends Component {
     this.getStyle = getStyle.bind(this)
     this.addSecond = addSecond.bind(this)
     setTimeout(this.addSecond, 1000)
+    // end game screen
+    this.handleNameChange = handleNameChange.bind(this)
+    this.handleEmailChange = handleEmailChange.bind(this)
+    this.handleSubmit = handleSubmit.bind(this)
   }
 
   render () {
@@ -138,27 +150,29 @@ class App extends Component {
             <div className='time-elapsed'>Time Elapsed <div className='time-elapsed-text-style'>{parseTime(this.state.elapsedTime)}</div></div>
           </div>
         </div>
-        <button className='restart-area noselect' onClick={this.restart}>
+        <button className='restart-container noselect' onClick={this.restart}>
           <div className='restart-outer-div'>
             <img className='restart-img' alt='restart-img' src={require('../../images/restart.png')} />
             <div className='restart'>Restart</div>
           </div>
         </button>
+        <EndGame show={this.state.endGame} score={this.state.score}
+          validName={this.state.validName} validEmail={this.state.validEmail}
+          handleNameChange={this.handleNameChange} handleEmailChange={this.handleEmailChange}
+          handleSubmit={this.handleSubmit}
+          />
+        <Submitted show={this.state.submit} />
       </div>
     )
   }
 }
 
-// <button className='restart-area' onClick={this.restart}>
-//   <img className='restart-img' alt='restart-img' src={require('../../images/restart.png')} />
-//   <div className='restart'>Restart</div>
-// </button>
-// <EndGame className='end-game' visible={this.state.endGame} />
-
 function addSecond () {
-  this.setState({
-    elapsedTime: this.state.elapsedTime + 1
-  })
+  if (!this.state.stopTimer) {
+    this.setState({
+      elapsedTime: this.state.elapsedTime + 1
+    })
+  }
   setTimeout(this.addSecond, 1000)
 }
 
@@ -235,7 +249,8 @@ function crash () {
   this.setState({
     items: newItems,
     dragEnter: false,
-    crash: true
+    crash: true,
+    stopTimer: true
   })
   setTimeout(this.fadeOut, FADEOUT_TIME * 1000)
   // setTimeout(this.resetState, FADEOUT_TIME * 1000)
@@ -276,14 +291,16 @@ function resetState () {
     crash: false,
     fadeOut: false,
     fadeIn: false,
-    boardEnabled: true
+    boardEnabled: true,
+    stopTimer: false
   })
 }
 function endGame () {
   this.setState({
     fadeIn: false,
     boardEnabled: false,
-    endGame: true
+    endGame: true,
+    stopTimer: true
   })
 }
 function mouseUp () {
@@ -301,7 +318,8 @@ function mouseUp () {
     crash: false,
     fadeOut: false,
     fadeIn: false,
-    boardEnabled: true
+    boardEnabled: true,
+    stopTimer: false
   })
 }
 function restart () {
@@ -323,8 +341,11 @@ function restart () {
     crash: false,
     fadeOut: false,
     fadeIn: false,
-    boardEnabled: true
+    boardEnabled: true,
+    stopTimer: false,
+    submit: false
   })
+  setTimeout(this.addSecond, 1000)
 }
 
 function getStyle (x, y) {
@@ -381,6 +402,35 @@ function getStyle (x, y) {
     }
   }
   return this.styles.normal
+}
+
+function handleNameChange (event) {
+  this.setState({
+    name: event.target.value
+  })
+}
+function handleEmailChange (event) {
+  this.setState({
+    email: event.target.value
+  })
+}
+function handleSubmit (e) {
+  let validName = this.state.name.length !== 0
+  let validEmail = /(.+)@(.+){2,}\.(.+){2,}/.test(this.state.email)
+
+  if (validEmail && validName) {
+    // API post submit
+    this.setState({
+      endGame: false,
+      submit: true
+    })
+  } else {
+    this.setState({
+      validName: validName,
+      validEmail: validEmail
+    })
+  }
+  e.preventDefault()
 }
 
 export default App
