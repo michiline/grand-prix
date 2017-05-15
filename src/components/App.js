@@ -1,60 +1,34 @@
 import React, { Component } from 'react'
+import axios from 'axios'
 import './App.css'
 import Board from './Board'
 import EndGame from './EndGame'
 import Submitted from './Submitted'
+import { getStyle, SWAP_TIME, FADEOUT_TIME, FADEIN_TIME } from '../item-styles'
 
-const COLS = 9
-const ROWS = 9
-const SWAP_TIME = 0.25
-const FADEOUT_TIME = 0.75
-const FADEIN_TIME = 0.75
-const SWAP_DISTANCE = '56px'
-const MOVES_LEFT = 2
+const MOVES_LEFT = 5
 
 class App extends Component {
   constructor (props) {
     super()
-    let items = Array.from({length: ROWS}, () => {
-      return Array.from({length: COLS}, () => getRandomInt(0, 5))
-    })
     this.state = {
+      token: '',
+      steps: [],
+      items: [],
+      swappedItems: [],
+      newItems: [],
       x1: -1,
       y1: -1,
       x2: -1,
       y2: -1,
-      crashed: [{
-        x: 3,
-        y: 5
-      },
-      {
-        x: 4,
-        y: 5
-      },
-      {
-        x: 5,
-        y: 5
-      },
-      {
-        x: 6,
-        y: 5
-      },
-      {
-        x: 4,
-        y: 4
-      },
-      {
-        x: 4,
-        y: 3
-      }],
-      items: items,
-      // info
+      crashed: [],
       score: 0,
+      newScore: 0,
       movesLeft: MOVES_LEFT,
       elapsedTime: 0,
       // states
       mouseDown: false,
-      dragEnter: false,
+      swap: false,
       crash: false,
       fadeOut: false,
       fadeIn: false,
@@ -66,47 +40,13 @@ class App extends Component {
       email: '',
       validName: true,
       validEmail: true,
-      submit: false
-    }
-    this.styles = {
-      normal: {
-        opacity: 1
-      },
-      invisible: {
-        opacity: 0
-      },
-      mouseDown: {
-        opacity: 0.7
-      },
-      translateRight: {
-        transition: 'transform ' + SWAP_TIME + 's',
-        transform: 'translate(' + SWAP_DISTANCE + ', 0px)'
-      },
-      translateLeft: {
-        transition: 'transform ' + SWAP_TIME + 's',
-        transform: 'translate(-' + SWAP_DISTANCE + ', 0px)'
-      },
-      translateUp: {
-        transition: 'transform ' + SWAP_TIME + 's',
-        transform: 'translate(0px,-' + SWAP_DISTANCE + ')'
-      },
-      translateDown: {
-        transition: 'transform ' + SWAP_TIME + 's',
-        transform: 'translate(0px, ' + SWAP_DISTANCE + ')'
-      },
-      fadeOut: {
-        animation: 'fadeOut ' + FADEOUT_TIME + 's linear'
-      },
-      fadeOutLonger: {
-        animation: 'fadeOut ' + (FADEOUT_TIME + 0.15) + 's linear'
-      },
-      fadeIn: {
-        animation: 'fadeIn ' + FADEIN_TIME + 's linear'
-      }
+      submit: false,
+      reqStart: 0
     }
     this.mouseDown = mouseDown.bind(this)
-    this.dragEnter = dragEnter.bind(this)
-    this.crash = crash.bind(this)
+    this.swap = swap.bind(this)
+    this.crashSwapped = crashSwapped.bind(this)
+    this.crashStacked = crashStacked.bind(this)
     this.fadeOut = fadeOut.bind(this)
     this.fadeIn = fadeIn.bind(this)
     this.mouseUp = mouseUp.bind(this)
@@ -120,6 +60,17 @@ class App extends Component {
     this.handleNameChange = handleNameChange.bind(this)
     this.handleEmailChange = handleEmailChange.bind(this)
     this.handleSubmit = handleSubmit.bind(this)
+  }
+
+  componentDidMount () {
+    axios.post('http://jobfair.srolija.com/game/new', {
+      token: 'axilis'
+    }).then((response) => {
+      this.setState({
+        items: response.data.board,
+        token: response.data.gameToken
+      })
+    })
   }
 
   render () {
@@ -137,7 +88,7 @@ class App extends Component {
               boardEnabled={this.state.boardEnabled}
               mouseDown={this.mouseDown}
               mouseUp={this.mouseUp}
-              dragEnter={this.dragEnter}
+              swap={this.swap}
               getStyle={this.getStyle}
               />
           </div>
@@ -156,9 +107,13 @@ class App extends Component {
             <div className='restart'>Restart</div>
           </div>
         </button>
-        <EndGame show={this.state.endGame} score={this.state.score}
-          validName={this.state.validName} validEmail={this.state.validEmail}
-          handleNameChange={this.handleNameChange} handleEmailChange={this.handleEmailChange}
+        <EndGame
+          show={this.state.endGame}
+          score={this.state.score}
+          validName={this.state.validName}
+          validEmail={this.state.validEmail}
+          handleNameChange={this.handleNameChange}
+          handleEmailChange={this.handleEmailChange}
           handleSubmit={this.handleSubmit}
           />
         <Submitted show={this.state.submit} />
@@ -166,7 +121,7 @@ class App extends Component {
     )
   }
 }
-
+// ***************** helper functions *****************
 function addSecond () {
   if (!this.state.stopTimer) {
     this.setState({
@@ -201,14 +156,7 @@ function parseTime (time) {
   return min + ':' + sec
 }
 
-function getRandomInt (min, max) {
-  min = Math.ceil(min)
-  max = Math.floor(max)
-  return Math.floor(Math.random() * (max - min + 1)) + min
-}
-
-// mouse events
-
+// // ***************** game states *****************
 function mouseDown (e, x, y) {
   if (this.state.mouseDown === false) {
     this.setState({
@@ -219,36 +167,71 @@ function mouseDown (e, x, y) {
     console.log('1st item: (' + x + ',' + y + ')')
   }
 }
-function dragEnter (e, x, y) {
-  // ovdje bi trebao ici API poziv
+function swap (e, x, y) {
+  // if swap is allowed
   if (this.state.mouseDown === true && ((this.state.x1 !== x && this.state.y1 === y) || (this.state.x1 === x && this.state.y1 !== y))) {
+    this.setState({
+      reqStart: window.performance.now()
+    })
+    axios.post('http://jobfair.srolija.com/game/swap', {
+      token: this.state.token,
+      row1: this.state.x1,
+      col1: this.state.y1,
+      row2: x,
+      col2: y
+    }).then((response) => {
+      // swap successful, make it permanent
+      let end = window.performance.now()
+      let time = end - this.state.reqStart
+      let swappedItems = this.state.items.slice()
+      let temp = this.state.items[this.state.x1][this.state.y1]
+      swappedItems[this.state.x1][this.state.y1] = swappedItems[this.state.x2][this.state.y2]
+      swappedItems[this.state.x2][this.state.y2] = temp
+      this.setState({
+        swappedItems: swappedItems,
+        stopTimer: true,
+        steps: response.data.steps,
+        newScore: response.data.totalScore,
+        newRound: response.data.round
+      })
+      setTimeout(this.crashSwapped, Math.floor(SWAP_TIME * 500 - time))
+    }).catch((err) => {
+      // swap unsuccessful, swap back items
+      console.log(err)
+      setTimeout(this.resetState, SWAP_TIME * 1000)
+    })
     console.log('swap with: (' + x + ',' + y + ')')
     this.setState({
       movesLeft: this.state.movesLeft - 1,
       mouseDown: false,
       boardEnabled: false,
-      dragEnter: true,
+      swap: true,
       x2: x,
       y2: y
     })
-    // ako se crasha, if crashed.length > 0
-    let crash = true
-    if (crash) {
-      setTimeout(this.crash, SWAP_TIME * 1000)
-    } else {
-      setTimeout(this.resetState, SWAP_TIME * 2000)
-    }
   }
 }
-function crash () {
-  // moze biti vise crashanja
-  let newItems = this.state.items.slice()
-  let temp = this.state.items[this.state.x1][this.state.y1]
-  newItems[this.state.x1][this.state.y1] = newItems[this.state.x2][this.state.y2]
-  newItems[this.state.x2][this.state.y2] = temp
+function crashSwapped () {
+  let step = this.state.steps.shift()
+  let newItems = step.board
   this.setState({
-    items: newItems,
-    dragEnter: false,
+    items: this.state.swappedItems,
+    newItems: newItems,
+    crashed: step.groupedMatches,
+    swap: false,
+    crash: true,
+    stopTimer: true
+  })
+  setTimeout(this.fadeOut, FADEOUT_TIME * 1000)
+}
+function crashStacked () {
+  let step = this.state.steps.shift()
+  let newItems = step.board
+  this.setState({
+    items: this.state.newItems,
+    newItems: newItems,
+    crashed: step.groupedMatches,
+    swap: false,
     crash: true,
     stopTimer: true
   })
@@ -265,9 +248,13 @@ function fadeOut () {
 function fadeIn () {
   // new items should be here
   this.setState({
+    items: this.state.newItems,
     fadeOut: false,
     fadeIn: true
   })
+  if (this.state.steps.length >= 1) {
+    setTimeout(this.crashStacked, FADEIN_TIME * 1000)
+  }
   if (this.state.movesLeft === 0) {
     console.log('end game')
     setTimeout(this.endGame, FADEIN_TIME * 1000)
@@ -287,7 +274,8 @@ function resetState () {
     },
     elapsedTime: 0,
     mouseDown: false,
-    dragEnter: false,
+    swap: false,
+    swapBack: false,
     crash: false,
     fadeOut: false,
     fadeIn: false,
@@ -314,7 +302,7 @@ function mouseUp () {
       y: -1
     },
     mouseDown: false,
-    dragEnter: false,
+    swap: false,
     crash: false,
     fadeOut: false,
     fadeIn: false,
@@ -337,7 +325,7 @@ function restart () {
     movesLeft: MOVES_LEFT,
     elapsedTime: 0,
     mouseDown: false,
-    dragEnter: false,
+    swap: false,
     crash: false,
     fadeOut: false,
     fadeIn: false,
@@ -347,63 +335,9 @@ function restart () {
   })
   setTimeout(this.addSecond, 1000)
 }
+// ***************** API calls *****************
 
-function getStyle (x, y) {
-  // if first item is selected
-  if (this.state.mouseDown && this.state.x1 === x && this.state.y1 === y) {
-    return this.styles.mouseDown
-    // if first item is dragged to second item
-  } else if (this.state.dragEnter) {
-    // for the first item
-    if (this.state.x1 === x && this.state.y1 === y) {
-      if (this.state.x1 === this.state.x2 && this.state.y1 === this.state.y2 - 1) {
-        return this.styles.translateRight
-      } else if (this.state.x1 === this.state.x2 && this.state.y1 === this.state.y2 + 1) {
-        return this.styles.translateLeft
-      } else if (this.state.x1 === this.state.x2 - 1 && this.state.y1 === this.state.y2) {
-        return this.styles.translateDown
-      }
-      return this.styles.translateUp
-    }
-    // for the second item
-    if (this.state.x2 === x && this.state.y2 === y) {
-      if (this.state.x2 === this.state.x1 && this.state.y2 === this.state.y1 - 1) {
-        return this.styles.translateRight
-      } else if (this.state.x2 === this.state.x1 && this.state.y2 === this.state.y1 + 1) {
-        return this.styles.translateLeft
-      } else if (this.state.x2 === this.state.x1 - 1 && this.state.y2 === this.state.y1) {
-        return this.styles.translateDown
-      }
-      return this.styles.translateUp
-    }
-    // if it's crashing time
-  } else if (this.state.crash) {
-    for (let i = 0; i < this.state.crashed.length; i++) {
-      if (this.state.crashed[i].x === x && this.state.crashed[i].y === y) {
-        return this.styles.fadeOutLonger
-      }
-    }
-    // fade out new items
-  } else if (this.state.fadeOut) {
-    for (let i = 0; i < this.state.crashed.length; i++) {
-      // if it's in the right column
-      if (this.state.crashed[i].y === y && this.state.crashed[i].x > x) {
-        return this.styles.fadeOut
-      } else if (this.state.crashed[i].y === y && this.state.crashed[i].x === x) {
-        return this.styles.invisible
-      }
-    }
-  } else {
-    for (let i = 0; i < this.state.crashed.length; i++) {
-      // if it's in the right column
-      if (this.state.crashed[i].y === y && this.state.crashed[i].x >= x) {
-        return this.styles.fadeIn
-      }
-    }
-  }
-  return this.styles.normal
-}
-
+// ***************** end screen *****************
 function handleNameChange (event) {
   this.setState({
     name: event.target.value

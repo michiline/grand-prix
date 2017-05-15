@@ -21,10 +21,10 @@ class Board extends Component {
                           <img
                             className='ic_item'
                             id={'{"x":' + x + ',"y":' + y + '}'}
-                            alt='img' src={images[item]}
+                            alt='img' src={images[item - 1]}
                             onMouseDown={(e) => { this.props.mouseDown(e, x, y) }}
                             onMouseUp={(e) => { this.props.mouseUp(e, x, y) }}
-                            onDragEnter={(e) => { this.props.dragEnter(e, x, y) }}
+                            onDragEnter={(e) => { this.props.swap(e, x, y) }}
                             style={this.props.getStyle(x, y)}
                             />
                         </td>
