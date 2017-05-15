@@ -1,9 +1,16 @@
+@import url(https://fonts.googleapis.com/css?family=Open+Sans);
+body{
+   font-family: 'Open Sans',serif;
+}
 button {
   padding: 0 !important;
   border: none;
 }
 button:focus {
   outline:0;
+}
+button:hover {
+  border: 2px solid #e8e8e8;
 }
 td {
   padding: 5px;
@@ -51,6 +58,7 @@ td:hover {
   width: 1920px;
   height: 931px;
   background-color: #efc319;
+  text-align: center;
 }
 .header {
   width: 1920px;
@@ -59,26 +67,35 @@ td:hover {
   box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.1);
 }
 .ic_logo {
-  position: absolute;
-  top: 17px;
-  right: 910px;
-  bottom: 898px;
-  left: 910px;
+  margin: 0 auto;
   width: 100px;
   height: 16px;
   object-fit: contain;
 }
+.center {
+  margin: 0 auto;
+  display: table;
+}
+.board-outer-div {
+  display: inline-block;
+  margin: 50px;
+}
 .board {
-  position: absolute;
-  top: 100px;
-  right: 698px;
-  bottom: 306px;
-  left: 697px;
+  padding: 20px;
   width: 525px;
   height: 525px;
   border-radius: 25px;
   background-color: #ffffff;
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+}
+.noselect {
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
 }
 /* items */
 .ic_item {
@@ -87,102 +104,72 @@ td:hover {
   object-fit: contain;
 }
 .info {
-  position: absolute;
-  top: 100px;
-  right: 490px;
-  bottom: 484px;
-  left: 1243px;
   width: 187px;
   height: 347px;
   border-radius: 25px;
   background-color: #ffffff;
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+  display: inline-block;
+  vertical-align: top;
+  margin-top: 50px;
+  text-align: center;
 }
 .score {
-  position: absolute;
-  top: 29px;
-  right: 69.5px;
-  bottom: 294px;
-  left: 70.5px;
   width: 47px;
   height: 24px;
-  font-family: OpenSans;
+  font-family: 'Open Sans';
   font-size: 18px;
   text-align: center;
+  margin: 30px auto 10px auto;
   color: #424143;
 }
 .score-value {
-  position: absolute;
-  top: 63px;
-  right: 73px;
-  bottom: 251px;
-  left: 72px;
   width: 42px;
   height: 33px;
-  font-family: OpenSans;
+  font-family: 'Open Sans';
   font-size: 24px;
   font-weight: bold;
   text-align: center;
+  margin: 10px auto 20px auto;
   color: #424143;
 }
 .line {
   width: 163px;
   height: 2px;
   border: solid 1px #e8e8e8;
-}
-.first-line {
-  position: absolute;
-  top: 124px;
-  right: 12px;
-  bottom: 221px;
-  left: 12px;
+  margin: 0 auto;
 }
 .moves-left {
-  position: absolute;
-  top: 146px;
-  right: 47.5px;
-  bottom: 137px;
-  left: 47.5px;
   width: 92px;
   height: 64px;
-  font-family: OpenSans;
+  font-family: 'Open Sans';
   font-size: 18px;
   line-height: 1.78;
   text-align: center;
+  margin: 20px auto 20px auto;
   color: #424143;
 }
 .moves-left-text-style {
-  font-family: OpenSans;
+  font-family: 'Open Sans';
   font-size: 18px;
   line-height: 1.78;
   text-align: center;
   color: #424143;
   font-weight: bold;
 }
-.second-line {
-  position: absolute;
-  top: 230px;
-  right: 12px;
-  bottom: 115px;
-  left: 12px;
-}
 .time-elapsed {
-  position: absolute;
-  top: 262px;
-  right: 37px;
-  bottom: 31px;
-  left: 38px;
   width: 112px;
   height: 64px;
-  font-family: OpenSans;
+  font-family: 'Open Sans';
   font-size: 18px;
   line-height: 1.78;
   text-align: center;
+  margin: 20px auto 20px auto;
   color: #424143;
 }
 
 .time-elapsed-text-style {
-  font-family: OpenSans;
+  font-family: 'Open Sans';
   font-size: 18px;
   line-height: 1.78;
   text-align: center;
@@ -190,38 +177,33 @@ td:hover {
   font-weight: bold;
 }
 .restart-area {
-  position: absolute;
-  top: 675px;
-  right: 864px;
-  bottom: 206px;
-  left: 866px;
   width: 189.6px;
   height: 50px;
   border-radius: 27.2px;
   background-color: #ffffff;
   box-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.1);
+  display: inline-block;
+  margin: 0 auto;
+}
+.restart-outer-div {
+  display: inline-block;
 }
 .restart {
-  position: absolute;
-  top: 13px;
-  right: 45.6px;
-  bottom: 13px;
-  left: 77px;
   width: 67px;
   height: 24px;
-  font-family: OpenSans;
+  font-family: 'Open Sans';
   font-size: 18px;
   font-weight: bold;
   text-align: left;
+  display: inline-block;
+  margin-left: 10px;
   color: #424143;
+  vertical-align: top;
 }
 .restart-img {
-  position: absolute;
-  top: 16px;
-  right: 126.6px;
-  bottom: 15px;
-  left: 46px;
   width: 17px;
   height: 19px;
+  display: inline-block;
   background-color: #424143;
+  margin-top: 3px;
 }

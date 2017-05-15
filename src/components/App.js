@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import './App.css'
 import Board from './Board'
+import EndGame from './EndGame'
 
 const COLS = 9
 const ROWS = 9
@@ -8,7 +9,7 @@ const SWAP_TIME = 0.25
 const FADEOUT_TIME = 0.75
 const FADEIN_TIME = 0.75
 const SWAP_DISTANCE = '56px'
-const MOVES_LEFT = 15
+const MOVES_LEFT = 5
 
 class App extends Component {
   constructor (props) {
@@ -56,6 +57,7 @@ class App extends Component {
       crash: false,
       fadeOut: false,
       fadeIn: false,
+      endGame: false,
       boardEnabled: true
     }
     this.styles = {
@@ -102,6 +104,7 @@ class App extends Component {
     this.mouseUp = mouseUp.bind(this)
     this.resetState = resetState.bind(this)
     this.restart = restart.bind(this)
+    this.endGame = endGame.bind(this)
     this.getStyle = getStyle.bind(this)
     this.addSecond = addSecond.bind(this)
     setTimeout(this.addSecond, 1000)
@@ -110,33 +113,47 @@ class App extends Component {
   render () {
     return (
       <div className='App main'>
-        <div className='header'>
-          <img className='ic_logo' alt='ic_logo' src={require('../../images/ic-logo.svg')} />
+        <div className='header noselect'>
+          <div className='ic_logo'>
+            <img alt='ic_logo' src={require('../../images/ic-logo.svg')} />
+          </div>
         </div>
-        <Board
-          items={this.state.items}
-          boardEnabled={this.state.boardEnabled}
-          mouseDown={this.mouseDown}
-          mouseUp={this.mouseUp}
-          dragEnter={this.dragEnter}
-          getStyle={this.getStyle}
-          />
-        <div className='info'>
-          <div className='score'>Score</div>
-          <div className='line first-line' />
-          <div className='score-value'>{this.state.score}</div>
-          <div className='moves-left'>Moves Left <div className='moves-left-text-style'>{this.state.movesLeft}</div></div>
-          <div className='line second-line' />
-          <div className='time-elapsed'>Time Elapsed <div className='time-elapsed-text-style'>{parseTime(this.state.elapsedTime)}</div></div>
+        <div className='center'>
+          <div className='board-outer-div'>
+            <Board
+              items={this.state.items}
+              boardEnabled={this.state.boardEnabled}
+              mouseDown={this.mouseDown}
+              mouseUp={this.mouseUp}
+              dragEnter={this.dragEnter}
+              getStyle={this.getStyle}
+              />
+          </div>
+          <div className='info noselect'>
+            <div className='score'>Score</div>
+            <div className='score-value'>{this.state.score}</div>
+            <div className='line' />
+            <div className='moves-left'>Moves Left <div className='moves-left-text-style'>{this.state.movesLeft}</div></div>
+            <div className='line' />
+            <div className='time-elapsed'>Time Elapsed <div className='time-elapsed-text-style'>{parseTime(this.state.elapsedTime)}</div></div>
+          </div>
         </div>
-        <button className='restart-area' onClick={this.restart}>
-          <img className='restart-img' alt='restart-img' src={require('../../images/restart.png')} />
-          <div className='restart'>Restart</div>
+        <button className='restart-area noselect' onClick={this.restart}>
+          <div className='restart-outer-div'>
+            <img className='restart-img' alt='restart-img' src={require('../../images/restart.png')} />
+            <div className='restart'>Restart</div>
+          </div>
         </button>
       </div>
     )
   }
 }
+
+// <button className='restart-area' onClick={this.restart}>
+//   <img className='restart-img' alt='restart-img' src={require('../../images/restart.png')} />
+//   <div className='restart'>Restart</div>
+// </button>
+// <EndGame className='end-game' visible={this.state.endGame} />
 
 function addSecond () {
   this.setState({
@@ -236,7 +253,12 @@ function fadeIn () {
     fadeOut: false,
     fadeIn: true
   })
-  setTimeout(this.resetState, FADEIN_TIME * 1000)
+  if (this.state.movesLeft === 0) {
+    console.log('end game')
+    setTimeout(this.endGame, FADEIN_TIME * 1000)
+  } else {
+    setTimeout(this.resetState, FADEIN_TIME * 1000)
+  }
 }
 function resetState () {
   this.setState({
@@ -255,6 +277,13 @@ function resetState () {
     fadeOut: false,
     fadeIn: false,
     boardEnabled: true
+  })
+}
+function endGame () {
+  this.setState({
+    fadeIn: false,
+    boardEnabled: false,
+    endGame: true
   })
 }
 function mouseUp () {

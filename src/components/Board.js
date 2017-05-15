@@ -8,7 +8,7 @@ class Board extends Component {
     //   img.src = src
     // })
     return (
-      <table className={this.props.boardEnabled ? 'enabled board' : 'disabled board'}>
+      <table className={this.props.boardEnabled ? 'enabled noselect board' : 'disabled noselect board'}>
         <tbody>
           {
             this.props.items.map((row, x) => {
