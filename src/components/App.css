@@ -11,7 +11,7 @@ button:focus {
   outline: 0;
 }
 button:hover {
-  border: 2px solid #e8e8e8;
+  border: 1px solid #e8e8e8;
 }
 input {
   font-size: 20px;
@@ -211,8 +211,8 @@ td:hover {
 .restart-outer-div {
   display: inline-block;
 }
-.restart:hover {
-  color: #f5c424;
+.hover {
+  color: #f5c424 !important;
 }
 .restart {
   width: 67px;
@@ -227,11 +227,11 @@ td:hover {
   vertical-align: top;
 }
 .restart-img {
+  margin-top: 3px;
   width: 17px;
   height: 19px;
+  object-fit: contain;
   display: inline-block;
-  background-color: #424143;
-  margin-top: 3px;
 }
 .end-game-wrapper {
   position: relative;
@@ -387,5 +387,5 @@ td:hover {
   width: 20px;
   height: 20px;
   object-fit: contain;
-  margin: 27% auto;
+  margin: 28% auto;
 }

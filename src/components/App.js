@@ -3,10 +3,11 @@ import axios from 'axios'
 import './App.css'
 import Board from './Board'
 import EndGame from './EndGame'
+import Restart from './Restart'
 import Congratulations from './Congratulations'
 import { getStyle, SWAP_TIME, FADEOUT_TIME, FADEIN_TIME } from '../styles'
 
-const NUM_OF_ROUNDS = 2
+const NUM_OF_ROUNDS = 15
 
 class App extends Component {
   constructor (props) {
@@ -105,12 +106,7 @@ class App extends Component {
             <div className='time-elapsed'>Time Elapsed <div className={changeColor(this.state.elapsedTime)}>{parseTime(this.state.elapsedTime)}</div></div>
           </div>
         </div>
-        <button className='restart-container noselect' onClick={this.restart}>
-          <div className='restart-outer-div'>
-            <img className='restart-img' alt='restart-img' src={require('../../images/restart.png')} />
-            <div className='restart'>Restart</div>
-          </div>
-        </button>
+        <Restart onClick={this.restart} />
         <EndGame
           show={this.state.endGame}
           score={this.state.score}
