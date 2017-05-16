@@ -37,14 +37,14 @@ const styles = {
   fadeIn: {
     animation: 'fadeIn ' + FADEIN_TIME + 's linear'
   },
-  modalStyle : {
+  modalStyle: {
     display: 'table-cell',
     verticalAlign: 'middle',
     height: '100%',
     width: '100%',
     zIndex: '9999'
   },
-  backdropStyle : {
+  backdropStyle: {
     position: 'absolute',
     width: '100%',
     height: '100%',
@@ -110,4 +110,4 @@ function getStyle (x, y) {
   return styles.fadeIn
 }
 
-export { getStyle, SWAP_TIME, FADEOUT_TIME, FADEIN_TIME, styles}
+export { getStyle, SWAP_TIME, FADEOUT_TIME, FADEIN_TIME, styles }

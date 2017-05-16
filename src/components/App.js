@@ -119,6 +119,7 @@ class App extends Component {
           handleNameChange={this.handleNameChange}
           handleEmailChange={this.handleEmailChange}
           handleSubmit={this.handleSubmit}
+          handleClose={this.restart}
           />
         <Congratulations show={this.state.submitted} finish={this.restart} />
       </div>
@@ -149,7 +150,7 @@ function swap (e, x, y) {
       row2: x,
       col2: y
     }).then((response) => {
-      console.log(response.data)
+      console.dir(response.data)
       // swap successful, make it permanent
       let end = window.performance.now()
       let time = end - this.state.reqStart
@@ -339,6 +340,7 @@ function restart () {
   clearTimeout(this.state.timeoutId)
   this.addSecond()
 }
+
 // ***************** end screen *****************
 function handleNameChange (event) {
   this.setState({

@@ -233,6 +233,11 @@ td:hover {
   background-color: #424143;
   margin-top: 3px;
 }
+.end-game-wrapper {
+  position: relative;
+  display: table;
+  margin: 0 auto;
+}
 .end-game-container {
   width: 462px;
   height: 542px;
@@ -240,6 +245,7 @@ td:hover {
   background-color: #ffffff;
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
   margin: 0 auto;
+  display: inline-block;
 }
 .end-game-score-container {
   width: 462px;
@@ -363,4 +369,23 @@ td:hover {
   font-size: 18px;
   color: #fff;
   margin-top: 20px;
+}
+.close-container {
+  position: absolute;
+  width: 56.6px;
+  height: 56.6px;
+  background-color: #ffffff;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+  border-radius: 50%;
+  display: inline-block;
+  vertical-align: top;
+  margin-top: -25px;
+  margin-left: -35px;
+  text-align: center;
+}
+.close-image {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+  margin: 27% auto;
 }
