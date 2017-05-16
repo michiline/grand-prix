@@ -4,7 +4,7 @@ import './App.css'
 import Board from './Board'
 import EndGame from './EndGame'
 import Congratulations from './Congratulations'
-import { getStyle, SWAP_TIME, FADEOUT_TIME, FADEIN_TIME } from '../item-styles'
+import { getStyle, SWAP_TIME, FADEOUT_TIME, FADEIN_TIME } from '../styles'
 
 const NUM_OF_ROUNDS = 2
 
@@ -149,6 +149,7 @@ function swap (e, x, y) {
       row2: x,
       col2: y
     }).then((response) => {
+      console.log(response.data)
       // swap successful, make it permanent
       let end = window.performance.now()
       let time = end - this.state.reqStart

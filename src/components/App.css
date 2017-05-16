@@ -211,6 +211,9 @@ td:hover {
 .restart-outer-div {
   display: inline-block;
 }
+.restart:hover {
+  color: #f5c424;
+}
 .restart {
   width: 67px;
   height: 24px;

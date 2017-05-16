@@ -85,7 +85,7 @@ function getStyle (x, y) {
     }
   } else if (this.state.crash) {
     for (let i = 0; i < this.state.crashed.length; i++) {
-      if (this.state.crashed[i][0] === x && this.state.crashed[i][1] === y) {
+      if (this.state.crashed[i][0] === y && this.state.crashed[i][1] === x) {
         return styles.fadeOutLonger
       }
     }
@@ -93,16 +93,16 @@ function getStyle (x, y) {
   } else if (this.state.fadeOut) {
     for (let i = 0; i < this.state.crashed.length; i++) {
       // if it's in the right column
-      if (this.state.crashed[i][0] === x && this.state.crashed[i][1] > y) {
+      if (this.state.crashed[i][0] === y && this.state.crashed[i][1] > x) {
         return styles.fadeOut
-      } else if (this.state.crashed[i][1] === y && this.state.crashed[i][0] === x) {
+      } else if (this.state.crashed[i][0] === y && this.state.crashed[i][1] === x) {
         return styles.invisible
       }
     }
   } else if (this.state.fadeIn) {
     for (let i = 0; i < this.state.crashed.length; i++) {
       // if it's in the right column
-      if (this.state.crashed[i][0] === x && this.state.crashed[i][1] >= y) {
+      if (this.state.crashed[i][0] === y && this.state.crashed[i][1] >= x) {
         return styles.fadeIn
       }
     }

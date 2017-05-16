@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { styles } from '../item-styles'
+import { styles } from '../styles'
 class Congratulations extends Component {
   render () {
     if (this.props.show === false) {
