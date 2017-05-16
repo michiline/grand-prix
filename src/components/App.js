@@ -102,7 +102,7 @@ class App extends Component {
             <div className='line' />
             <div className='moves-left'>Round<div className='moves-left-text-style'>{this.state.round}</div></div>
             <div className='line' />
-            <div className='time-elapsed'>Time Elapsed <div className='time-elapsed-text-style'>{parseTime(this.state.elapsedTime)}</div></div>
+            <div className='time-elapsed'>Time Elapsed <div className={changeColor(this.state.elapsedTime)}>{parseTime(this.state.elapsedTime)}</div></div>
           </div>
         </div>
         <button className='restart-container noselect' onClick={this.restart}>
@@ -165,13 +165,9 @@ function swap (e, x, y) {
         animationId: setTimeout(this.crash, Math.floor(SWAP_TIME * 500 - time))
       })
       clearTimeout(this.state.timeoutId)
-      this.setState({
-
-      })
-    }).catch((err) => {
-      // swap unsuccessful, swap back items
-      if (err) {
-        console.log('swap back')
+    }).catch(err => {
+      if (err.response) {
+        console.log(err.response.data)
       }
       this.setState({
         animationId: setTimeout(this.resetState, SWAP_TIME * 1000)
@@ -264,7 +260,7 @@ function resetState () {
     boardEnabled: true
   })
   clearTimeout(this.state.timeoutId)
-  this.addSecond()
+  setTimeout(this.addSecond, 1000)
 }
 function resetStateAndTimer () {
   this.setState({
@@ -275,7 +271,7 @@ function resetStateAndTimer () {
 function endGame () {
   this.setState({
     fadeIn: false,
-    boardEnabled: false,
+    boardEnabled: true,
     endGame: true,
     stopTimer: true
   })
@@ -300,7 +296,10 @@ function mouseUp () {
   })
 }
 function restart () {
-  clearTimeout(this.state.animationId)
+  console.log(this.state.boardEnabled)
+  if (!this.state.boardEnabled) {
+    return
+  }
   axios.post('http://jobfair.srolija.com/game/new', {
     token: 'axilis'
   }).then((response) => {
@@ -401,6 +400,16 @@ function parseTime (time) {
     }
   }
   return min + ':' + sec
+}
+
+function changeColor (elapsedTime) {
+  if (elapsedTime <= 2) {
+    return 'time-elapsed-text-style green'
+  } else if (elapsedTime <= 4) {
+    return 'time-elapsed-text-style yellow'
+  } else {
+    return 'time-elapsed-text-style red'
+  }
 }
 
 export default App

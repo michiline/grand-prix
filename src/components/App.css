@@ -183,13 +183,20 @@ td:hover {
   margin: 20px auto 20px auto;
   color: #424143;
 }
-
+.green {
+  color: #32CD32;
+}
+.yellow {
+  color: #CCCC00;
+}
+.red {
+  color: #FF0000;
+}
 .time-elapsed-text-style {
   font-family: 'Open Sans', 'Helvetica Neue', 'Tahoma', sans-serif;
   font-size: 18px;
   line-height: 1.78;
   text-align: center;
-  color: #424143;
   font-weight: bold;
 }
 .restart-container {
