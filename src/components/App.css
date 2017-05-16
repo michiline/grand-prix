@@ -241,7 +241,7 @@ td:hover {
 .end-game-score {
   width: 138px;
   height: 24px;
-  font-family: OpenSans;
+  font-family: 'Open Sans';
   font-size: 18px;
   text-align: center;
   color: #ffffff;
@@ -252,7 +252,7 @@ td:hover {
 .end-game-score-value {
   width: 42px;
   height: 33px;
-  font-family: OpenSans;
+  font-family: 'Open Sans';
   font-size: 24px;
   font-weight: bold;
   text-align: center;
@@ -262,7 +262,7 @@ td:hover {
 .end-game-name {
   width: 74px;
   height: 21px;
-  font-family: Roboto;
+  font-family: 'Roboto';
   font-size: 16px;
   text-align: left;
   color: #424143;
@@ -273,7 +273,7 @@ td:hover {
 .end-game-email {
   width: 41px;
   height: 21px;
-  font-family: Roboto;
+  font-family: 'Roboto';
   font-size: 16px;
   text-align: left;
   color: #424143;
@@ -306,13 +306,14 @@ td:hover {
   background-color: #ffda49;
   box-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.1);
   font-size: 16px;
-  color: #fff
+  color: #fff;
+  font-family: 'Open Sans';
 }
 .invalid-warning {
   margin-left: 40px;
   width: 250px;
   height: 19px;
-  font-family: Roboto;
+  font-family: 'Roboto';
   font-size: 14px;
   text-align: left;
   color: #ff7e8e;
@@ -320,9 +321,36 @@ td:hover {
 .congratulations {
   width: 130px;
   height: 33px;
-  font-family: OpenSans;
+  font-family: 'Open Sans';
   font-size: 24px;
   font-weight: bold;
   text-align: center;
   color: #ffffff;
+  margin: 60px auto 0 auto;
+  padding: 10px;
+  display: inline-block;
+}
+.congratulations-text {
+  width: 355px;
+  height: 90px;
+  font-family: 'Roboto';
+  font-size: 19px;
+  line-height: 1.58;
+  text-align: center;
+  color: #242424;
+  margin: 60px auto 0 auto;
+  padding: 10px;
+  display: inline-block;
+}
+.congratulations-finish {
+  margin-top: 30px;
+  width: 189.6px;
+  height: 50px;
+  font-family: 'Open Sans';
+  border-radius: 27.2px;
+  background-color: #ffda49;
+  box-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.1);
+  font-size: 18px;
+  color: #fff;
+  margin-top: 20px;
 }

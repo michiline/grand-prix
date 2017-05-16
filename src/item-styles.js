@@ -1,4 +1,4 @@
-const SWAP_TIME = 0.25
+const SWAP_TIME = 0.3
 const FADEOUT_TIME = 0.75
 const FADEIN_TIME = 0.75
 const SWAP_DISTANCE = '59px'
@@ -36,6 +36,22 @@ const styles = {
   },
   fadeIn: {
     animation: 'fadeIn ' + FADEIN_TIME + 's linear'
+  },
+  modalStyle : {
+    display: 'table-cell',
+    verticalAlign: 'middle',
+    height: '100%',
+    width: '100%',
+    zIndex: '9999'
+  },
+  backdropStyle : {
+    position: 'absolute',
+    width: '100%',
+    height: '100%',
+    top: '0px',
+    left: '0px',
+    zIndex: '9998',
+    background: 'rgba(0, 0, 0, 0.3)'
   }
 }
 
@@ -83,7 +99,7 @@ function getStyle (x, y) {
         return styles.invisible
       }
     }
-  } else {
+  } else if (this.state.fadeIn) {
     for (let i = 0; i < this.state.crashed.length; i++) {
       // if it's in the right column
       if (this.state.crashed[i][0] === x && this.state.crashed[i][1] >= y) {
@@ -94,4 +110,4 @@ function getStyle (x, y) {
   return styles.fadeIn
 }
 
-export { getStyle, SWAP_TIME, FADEOUT_TIME, FADEIN_TIME }
+export { getStyle, SWAP_TIME, FADEOUT_TIME, FADEIN_TIME, styles}
