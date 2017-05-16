@@ -1,6 +1,24 @@
 import React, { Component } from 'react'
 import { styles } from '../styles'
 class EndGame extends Component {
+  constructor (props) {
+    super(props)
+    this.state = {
+      hover: false
+    }
+    this.onMouseEnter = this.onMouseEnter.bind(this)
+    this.onMouseLeave = this.onMouseLeave.bind(this)
+  }
+  onMouseEnter () {
+    this.setState({
+      hover: true
+    })
+  }
+  onMouseLeave () {
+    this.setState({
+      hover: false
+    })
+  }
   render () {
     if (!this.props.show) {
       return null
@@ -29,8 +47,8 @@ class EndGame extends Component {
                   <input className='end-game-submit' type='submit' value='Submit' onClick={this.props.handleSubmit} />
                 </form>
               </div>
-              <div className='close-container' onClick={this.props.handleClose}>
-                <img alt='close_img' src={require('../../images/x.svg')} className='close-image' />
+              <div className='close-container' onClick={this.props.handleClose} onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave}>
+                <img alt='close_img' src={this.state.hover ? require('../../images/x-hover.svg') : require('../../images/x.svg')} className='close-image' />
               </div>
             </div>
           </div>
