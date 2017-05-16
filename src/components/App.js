@@ -149,7 +149,6 @@ function swap (e, x, y) {
       row2: x,
       col2: y
     }).then((response) => {
-      console.dir(response.data)
       // swap successful, make it permanent
       let end = window.performance.now()
       let time = end - this.state.reqStart
@@ -296,7 +295,6 @@ function mouseUp () {
   })
 }
 function restart () {
-  console.log(this.state.boardEnabled)
   if (!this.state.boardEnabled) {
     return
   }
@@ -357,9 +355,17 @@ function handleSubmit (e) {
 
   if (validEmail && validName) {
     // API post submit
-    this.setState({
-      endGame: false,
-      submitted: true
+    axios.post('http://jobfair.srolija.com/candidate', {
+      name: this.state.name,
+      email: this.state.email
+    }).then(response => {
+      console.log(response.data)
+      this.setState({
+        endGame: false,
+        submitted: true
+      })
+    }).catch(err => {
+      console.log(err)
     })
   } else {
     this.setState({
