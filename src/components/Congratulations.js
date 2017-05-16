@@ -1,6 +1,24 @@
 import React, { Component } from 'react'
 import { styles } from '../styles'
 class Congratulations extends Component {
+  constructor (props) {
+    super(props)
+    this.state = {
+      hover: false
+    }
+    this.onMouseEnter = this.onMouseEnter.bind(this)
+    this.onMouseLeave = this.onMouseLeave.bind(this)
+  }
+  onMouseEnter () {
+    this.setState({
+      hover: true
+    })
+  }
+  onMouseLeave () {
+    this.setState({
+      hover: false
+    })
+  }
   render () {
     if (this.props.show === false) {
       return null
@@ -19,7 +37,7 @@ class Congratulations extends Component {
               <p className='congratulations-text'>
                 Uspješno ste poslali rezultat svoje igre!
               </p>
-              <input className='congratulations-finish' type='submit' value='Završi' onClick={this.props.finish} />
+              <input className={this.state.hover ? 'congratulations-finish hover-submit' : 'congratulations-finish'} type='submit' value='Završi' onClick={this.props.finish} onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave} />
             </div>
           </div>
         </div>

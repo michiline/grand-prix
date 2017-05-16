@@ -4,19 +4,32 @@ class EndGame extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      hover: false
+      hoverClose: false,
+      hoverSubmit: false
     }
-    this.onMouseEnter = this.onMouseEnter.bind(this)
-    this.onMouseLeave = this.onMouseLeave.bind(this)
+    this.onMouseEnterClose = this.onMouseEnterClose.bind(this)
+    this.onMouseLeaveClose = this.onMouseLeaveClose.bind(this)
+    this.onMouseEnterSubmit = this.onMouseEnterSubmit.bind(this)
+    this.onMouseLeaveSubmit = this.onMouseLeaveSubmit.bind(this)
   }
-  onMouseEnter () {
+  onMouseEnterClose () {
     this.setState({
-      hover: true
+      hoverClose: true
     })
   }
-  onMouseLeave () {
+  onMouseLeaveClose () {
     this.setState({
-      hover: false
+      hoverClose: false
+    })
+  }
+  onMouseEnterSubmit () {
+    this.setState({
+      hoverSubmit: true
+    })
+  }
+  onMouseLeaveSubmit () {
+    this.setState({
+      hoverSubmit: false
     })
   }
   render () {
@@ -31,24 +44,24 @@ class EndGame extends Component {
               <div className='end-game-container noselect'>
                 <div className='end-game-score-container'>
                   <div className='end-game-score'>
-                    Your Total Score
+                    Konačan broj bodova!
                   </div>
                   <div className='end-game-score-value'>
                     {this.props.score}
                   </div>
                 </div>
                 <form className='end-game-form'>
-                  <p className='end-game-name'>Full name</p>
+                  <p className='end-game-name'>Ime i prezime</p>
                   <input name='name' type='text' className={this.props.validName ? 'end-game-input-valid' : 'end-game-input-invalid'} onChange={this.props.handleNameChange} />
                   {this.props.validName ? null : <p className='invalid-warning'>Polje ne smije ostati prazno</p>}
                   <p name='email' type='text' className='end-game-email'>Email</p>
                   <input className={this.props.validEmail ? 'end-game-input-valid' : 'end-game-input-invalid'} onChange={this.props.handleEmailChange} />
                   {this.props.validEmail ? null : <p className='invalid-warning'>Neispravan email</p>}
-                  <input className='end-game-submit' type='submit' value='Submit' onClick={this.props.handleSubmit} />
+                  <input className={this.state.hoverSubmit ? 'end-game-submit hover-submit' : 'end-game-submit'} type='submit' value='Pošalji' onClick={this.props.handleSubmit} onMouseEnter={this.onMouseEnterSubmit} onMouseLeave={this.onMouseLeaveSubmit} />
                 </form>
               </div>
-              <div className='close-container' onClick={this.props.handleClose} onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave}>
-                <img alt='close_img' src={this.state.hover ? require('../../images/x-hover.svg') : require('../../images/x.svg')} className='close-image' />
+              <div className='close-container' onClick={this.props.handleClose} onMouseEnter={this.onMouseEnterClose} onMouseLeave={this.onMouseLeaveClose}>
+                <img alt='close_img' src={this.state.hoverClose ? require('../../images/x-hover.svg') : require('../../images/x.svg')} className='close-image' />
               </div>
             </div>
           </div>
