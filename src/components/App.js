@@ -35,7 +35,6 @@ class App extends Component {
       boardEnabled: true,
       stopTimer: false,
       timeoutId: 0,
-      animationId: 0,
       gameOver: false,
       // end game
       name: '',
@@ -62,6 +61,8 @@ class App extends Component {
     // end game screen
     this.handleNameChange = handleNameChange.bind(this)
     this.handleEmailChange = handleEmailChange.bind(this)
+    this.handleNameBlur = handleNameBlur.bind(this)
+    this.handleEmailBlur = handleEmailBlur.bind(this)
     this.handleSubmit = handleSubmit.bind(this)
   }
 
@@ -112,6 +113,8 @@ class App extends Component {
           validEmail={this.state.validEmail}
           handleNameChange={this.handleNameChange}
           handleEmailChange={this.handleEmailChange}
+          handleNameBlur={this.handleNameBlur}
+          handleEmailBlur={this.handleEmailBlur}
           handleSubmit={this.handleSubmit}
           handleClose={this.restart}
           />
@@ -156,17 +159,15 @@ function swap (e, x, y) {
         swappedItems: swappedItems,
         gameOver: response.data.gameOver,
         steps: response.data.steps,
-        newRound: response.data.round,
-        animationId: setTimeout(this.crash, Math.floor(SWAP_TIME * 500 - time))
+        newRound: response.data.round
       })
+      setTimeout(this.crash, Math.floor(SWAP_TIME * 500 - time))
       clearTimeout(this.state.timeoutId)
     }).catch(err => {
       if (err.response) {
         console.log(err.response.data)
       }
-      this.setState({
-        animationId: setTimeout(this.resetState, SWAP_TIME * 1000)
-      })
+      setTimeout(this.resetState, SWAP_TIME * 1000)
     })
     console.log('swap with: (' + x + ',' + y + ')')
     this.setState({
@@ -188,9 +189,9 @@ function crash () {
     crashed: step.groupedMatches,
     swap: false,
     crash: true,
-    newScore: newScore,
-    animationId: setTimeout(this.fadeOut, FADEOUT_TIME * 1000)
+    newScore: newScore
   })
+  setTimeout(this.fadeOut, FADEOUT_TIME * 1000)
   clearTimeout(this.state.timeoutId)
 }
 function crashStacked () {
@@ -203,9 +204,9 @@ function fadeOut () {
   this.setState({
     crash: false,
     fadeOut: true,
-    score: this.state.newScore,
-    animationId: setTimeout(this.fadeIn, FADEOUT_TIME * 1000)
+    score: this.state.newScore
   })
+  setTimeout(this.fadeIn, FADEOUT_TIME * 1000)
 }
 function fadeIn () {
   // new items should be here
@@ -216,24 +217,18 @@ function fadeIn () {
   })
   // if there are more steps
   if (this.state.steps.length >= 1) {
-    this.setState({
-      animationId: setTimeout(this.crashStacked, FADEIN_TIME * 1000)
-    })
+    setTimeout(this.crashStacked, FADEIN_TIME * 1000)
     // if this was the last move
   } else {
     // update score, round, continue
     this.setState({
       round: this.state.newRound
     })
-    if (true) {
+    if (this.state.gameOver) {
       console.log('game over')
-      this.setState({
-        animationId: setTimeout(this.endGame, FADEIN_TIME * 1000)
-      })
+      setTimeout(this.endGame, FADEIN_TIME * 1000)
     } else {
-      this.setState({
-        animationId: setTimeout(this.resetStateAndTimer, FADEIN_TIME * 1000)
-      })
+      setTimeout(this.resetStateAndTimer, FADEIN_TIME * 1000)
     }
   }
 }
@@ -293,6 +288,7 @@ function mouseUp () {
   })
 }
 function restart () {
+  console.dir(this.state)
   if (!this.state.boardEnabled) {
     return
   }
@@ -332,6 +328,7 @@ function restart () {
       submitted: false,
       reqStart: 0
     })
+    console.dir(this.state)
   })
   clearTimeout(this.state.timeoutId)
   this.addSecond()
@@ -346,6 +343,16 @@ function handleNameChange (event) {
 function handleEmailChange (event) {
   this.setState({
     email: event.target.value
+  })
+}
+function handleNameBlur (event) {
+  this.setState({
+    validName: this.state.name.length !== 0
+  })
+}
+function handleEmailBlur (event) {
+  this.setState({
+    validEmail: /(.+)@(.+){2,}\.(.+){2,}/.test(this.state.email)
   })
 }
 function handleSubmit (e) {
