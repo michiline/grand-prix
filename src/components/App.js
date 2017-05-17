@@ -7,8 +7,6 @@ import Restart from './Restart'
 import Congratulations from './Congratulations'
 import { getStyle, SWAP_TIME, FADEOUT_TIME, FADEIN_TIME } from '../styles'
 
-const NUM_OF_ROUNDS = 2
-
 class App extends Component {
   constructor (props) {
     super()
@@ -147,7 +145,6 @@ function swap (e, x, y) {
       col2: y,
       steps: true
     }).then((response) => {
-      console.dir(response.data)
       // swap successful, make it permanent
       let end = window.performance.now()
       let time = end - this.state.reqStart
@@ -157,8 +154,8 @@ function swap (e, x, y) {
       swappedItems[this.state.x2][this.state.y2] = temp
       this.setState({
         swappedItems: swappedItems,
+        gameOver: response.data.gameOver,
         steps: response.data.steps,
-        newScore: response.data.totalScore,
         newRound: response.data.round,
         animationId: setTimeout(this.crash, Math.floor(SWAP_TIME * 500 - time))
       })
@@ -184,12 +181,14 @@ function swap (e, x, y) {
 function crash () {
   let step = this.state.steps.shift()
   let newItems = step.board
+  let newScore = step.totalScore
   this.setState({
     items: this.state.stack ? this.state.newItems : this.state.swappedItems,
     newItems: newItems,
     crashed: step.groupedMatches,
     swap: false,
     crash: true,
+    newScore: newScore,
     animationId: setTimeout(this.fadeOut, FADEOUT_TIME * 1000)
   })
   clearTimeout(this.state.timeoutId)
@@ -204,6 +203,7 @@ function fadeOut () {
   this.setState({
     crash: false,
     fadeOut: true,
+    score: this.state.newScore,
     animationId: setTimeout(this.fadeIn, FADEOUT_TIME * 1000)
   })
 }
@@ -223,10 +223,9 @@ function fadeIn () {
   } else {
     // update score, round, continue
     this.setState({
-      score: this.state.newScore,
       round: this.state.newRound
     })
-    if (this.state.round === NUM_OF_ROUNDS) {
+    if (this.state.gameOver) {
       console.log('game over')
       this.setState({
         animationId: setTimeout(this.endGame, FADEIN_TIME * 1000)

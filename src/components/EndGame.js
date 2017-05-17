@@ -56,7 +56,7 @@ class EndGame extends Component {
                   {this.props.validName ? null : <p className='invalid-warning'>Polje ne smije ostati prazno</p>}
                   <p name='email' type='text' className='end-game-email'>Email</p>
                   <input className={this.props.validEmail ? 'end-game-input-valid' : 'end-game-input-invalid'} onChange={this.props.handleEmailChange} />
-                  {this.props.validEmail ? null : <p className='invalid-warning'>Neispravan email</p>}
+                  {this.props.validEmail ? null : <p hidden={this.props.validEmail ? 'true' : 'false'} className='invalid-warning'>Neispravan email</p>}
                   <input className={this.state.hoverSubmit ? 'end-game-submit hover-submit' : 'end-game-submit'} type='submit' value='Pošalji' onClick={this.props.handleSubmit} onMouseEnter={this.onMouseEnterSubmit} onMouseLeave={this.onMouseLeaveSubmit} />
                 </form>
               </div>
