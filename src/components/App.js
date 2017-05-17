@@ -225,7 +225,7 @@ function fadeIn () {
     this.setState({
       round: this.state.newRound
     })
-    if (this.state.gameOver) {
+    if (true) {
       console.log('game over')
       this.setState({
         animationId: setTimeout(this.endGame, FADEIN_TIME * 1000)

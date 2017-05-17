@@ -294,7 +294,7 @@ td:hover {
   text-align: left;
   color: #424143;
   margin-left: 40px;
-  margin-top: 30px;
+  margin-top: 10px;
   margin-bottom: 5px;
 }
 .modal-container {
@@ -315,7 +315,6 @@ td:hover {
   border: solid 1px #ff7e8e;
 }
 .end-game-submit {
-  margin-top: 30px;
   width: 189.6px;
   height: 50px;
   border-radius: 27.2px;
@@ -327,6 +326,9 @@ td:hover {
 }
 .hover-submit {
   background-color: #f5c424 !important;
+}
+.hidden {
+  visibility: hidden;
 }
 .invalid-warning {
   margin-left: 40px;
